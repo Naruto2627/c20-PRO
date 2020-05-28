@@ -18,34 +18,39 @@ function draw() {
 
   if(wall.x-car.x < (car.width+wall.width)/2)
   {
-    car.velocityX=0;
 
     var deformation = 0.5 * weight * speed * speed/22509;
+
+  if(car.isTouching(wall)){
+    car.velocityX = 0;
+  }
     
-    if(deformation>180)
+    if(deformation<100)
     {
       car.shapeColor = color(255,0,0); 
-
-      
-      Text("This car is lethal!",50,100);
     }
 
     if(deformation<180 && deformation>100)
     {
       car.shapeColor=color(230,230,0);
-
-      Text("This car is ok for passengers!",50,100);
-
     }
 
-    if(deformation<100)
+    if(deformation>180)
     {
       car.shapeColor=color(0,255,0);
-
-      Text("The car is !",50,100);
-
     }
   }
+
+  /*if(car.isTouching(wall) && car.shapeColor(255,0,0)){
+    Text("This car is very good for passengers ");
+  }
+  else if (car.isTouching(wall) && car.shapeColor(230,230,0)){
+  Text("This car is average i.e its safe for passengers");
+  }
+  else(car.isTouching(wall) && car.shapeColor(0,225,0)){
+  Text("This car is lethal for passengers");
+  }*/
+
 
   background(255,255,255);
 
