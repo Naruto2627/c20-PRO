@@ -1,39 +1,73 @@
-const Engine = Matter.Engine;
-const World= Matter.World;
-const Bodies = Matter.Bodies;
+var car,wall
+var speed,weight
 
-var engine, world;
-var ground,ball;
+function setup() {
+  
+  createCanvas(1600,400);
 
-function setup(){
-    var canvas = createCanvas(400,400);
-    engine = Engine.create();
-    world = engine.world;
+  car = createSprite(50, 200, 50, 50);
+  wall = createSprite(1500,200,60,height/2);
 
-    var ground_options ={
-        isStatic: true
-    }
-
-    ground = Bodies.rectangle(200,390,200,20,ground_options);
-    World.add(world,ground);
-
-    var ball_options={
-        restitution: 1.0
-    }
-
-    ball = Bodies.circle(200,100,20,ball_options);
-    World.add(world,ball);
-
-    console.log(ground);
+  speed = random(55,90);
+  weight = random (400,1500);
 }
 
-function draw(){
-    background(0);
-    Engine.update(engine);
-    
-    rectMode(CENTER);
-    rect(ground.position.x,ground.position.y,400,20);
+function draw() {
+  background(0,0,0);
 
-    ellipseMode(RADIUS);
-    ellipse(ball.position.x,ball.position.y,20,20);
+  text("x:"+mouseX,50,50);
+  text("y:"+mouseY,50,75);
+
+  car.velocityX = speed;
+  
+  deformation();
+
+  if(car.x>1460){
+    car.x = 1460;
+  }
+ 
+  fill("pink"); 
+  textSize(19); 
+  text("Deformation:"+Math.round((0.5*speed*weight*speed)/22500),1150,350);
+
+  fill("red"); 
+  textSize(19); 
+  text("Deformation >= 180 Is Considered Lethal For Passengers",350,270);
+
+  fill("yellow"); 
+  textSize(19);
+  text("Deformation >= 100 but <180 Is Considered Average For Passengers",350,292);
+
+  fill("green"); 
+  textSize(19);
+  text("Deformation <=100 Is Considered GOOD For Passengers",350,315);
+
+  
+
+  
+  drawSprites();
+}
+
+function deformation(){
+  if(wall.x-car.x < (car.width+wall.width)/2)
+  {
+
+    var deformation = 0.5 * weight * speed * speed/22509;
+    car.velocityX = 0;
+    if(deformation<100)
+    {
+      car.shapeColor = color(0,255,0); 
+    }
+
+    if(deformation<180 && deformation>100)
+    {
+      car.shapeColor=color(230,230,0);
+    }
+
+    if(deformation>180)
+    {
+      car.shapeColor=color(255,0,0);
+    }
+  }
+
 }
